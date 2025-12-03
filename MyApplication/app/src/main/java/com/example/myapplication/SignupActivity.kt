@@ -32,15 +32,28 @@ class SignupActivity : AppCompatActivity() {
             }else if(pass != passConfirm){
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
+            }else if(pass.length < 7){
+                Toast.makeText(this, "Passwords has to be at least 7 characters", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }else{
                 firebaseAuth.createUserWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(this) { task ->
                         if(task.isSuccessful){
-                            Toast.makeText(this, "Registration Complete", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, LoginActivity::class.java)
-                            startActivity(intent)
+                            val user = firebaseAuth.currentUser
+                            user?.sendEmailVerification()
+                                ?.addOnCompleteListener { verificationTask ->
+                                    if (verificationTask.isSuccessful) {
+                                        Toast.makeText(this, "Registration Complete", Toast.LENGTH_SHORT).show()
 
-                            finish()
+                                        val intent = Intent(this, LoginActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    }else{
+                                        Toast.makeText(this, "Email Verification Failed", Toast.LENGTH_SHORT).show()
+                                        return@addOnCompleteListener
+                                    }
+
+                                }
                         }else{
                             Toast.makeText(this, "Registration Failed", Toast.LENGTH_SHORT).show()
                             return@addOnCompleteListener

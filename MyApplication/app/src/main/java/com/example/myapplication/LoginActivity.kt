@@ -14,7 +14,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseActivity : FirebaseAuth
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -33,9 +32,15 @@ class LoginActivity : AppCompatActivity() {
                 firebaseActivity.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            val intent = Intent(this, InsertFileActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                            val user = firebaseActivity.currentUser
+                            if(user != null && user.isEmailVerified){
+                                val intent = Intent(this, InsertFileActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }else{
+                                Toast.makeText(this, "Please verify your email", Toast.LENGTH_SHORT).show()
+                                return@addOnCompleteListener
+                            }
                         } else {
                             Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
                             return@addOnCompleteListener
