@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".generate"
+            android:exported="false"
+            android:theme="@style/Theme.MyApplication" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false"
             android:theme="@style/Theme.MyApplication" />

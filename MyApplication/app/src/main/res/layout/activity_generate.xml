@@ -34,10 +34,9 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/pdfReader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="Generating...."
         android:textSize="30sp"
         android:background="@drawable/border"/>
 

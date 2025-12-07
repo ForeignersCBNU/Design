@@ -13,12 +13,12 @@
         android:layout_centerInParent="true">
 
         <Button
-        android:id="@+id/regbutton"
-        android:layout_marginHorizontal="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_up"
-        android:background="@drawable/roundbutton"/>
+            android:id="@+id/regbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/roundbutton"
+            android:text="@string/sign_up" />
 
         <Button
             android:id="@+id/logbutton"

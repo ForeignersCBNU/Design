@@ -106,15 +106,15 @@ class InsertFileActivity : AppCompatActivity() {
             )
             .build()
 
-        // 3️⃣ Build the POST request
+        // 3️⃣ Build the POST request — ⚠️ Put your actual server address here
         val request = Request.Builder()
-            .url("") // <-- Replace with your Flask/FastAPI URL
+            .url("https://changlit.com/upload") // example: "http://192.168.0.105/upload"
             .post(requestBody)
             .build()
 
         // 4️⃣ Send the request asynchronously
         client.newCall(request).enqueue(object : Callback {
-            // If upload fails (e.g. no internet, server down)
+
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
                     Toast.makeText(
@@ -125,17 +125,30 @@ class InsertFileActivity : AppCompatActivity() {
                 }
             }
 
-            // If upload succeeds and server responds
             override fun onResponse(call: Call, response: Response) {
                 val responseText = response.body?.string()
+
                 runOnUiThread {
                     Toast.makeText(
                         this@InsertFileActivity,
                         "Server response: $responseText",
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_SHORT
                     ).show()
+
+                    // ✅ Move to another activity after successful upload
+                    val intent = Intent(this@InsertFileActivity, generate::class.java)
+
+                    // Optionally pass data to the new screen
+                    intent.putExtra("response_message", responseText ?: "Upload completed.")
+                    intent.putExtra("uploaded_file_name", file.name)
+
+                    startActivity(intent)
+
+                    // Optional: finish current activity so the user can’t go back
+                    finish()
                 }
             }
         })
     }
+
 }
