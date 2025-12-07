@@ -13,6 +13,7 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.*
+import java.util.concurrent.TimeUnit
 
 class InsertFileActivity : AppCompatActivity() {
 
@@ -94,7 +95,11 @@ class InsertFileActivity : AppCompatActivity() {
      */
     private fun uploadFileToServer(file: File) {
         // 1️⃣ Create an OkHttp client (used to send requests)
-        val client = OkHttpClient()
+        val client = OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)  // time to connect to the server
+            .writeTimeout(120, TimeUnit.SECONDS)   // time to upload the file
+            .readTimeout(120, TimeUnit.SECONDS)    // time to wait for the server's response
+            .build()
 
         // 2️⃣ Create multipart request body with file data
         val requestBody = MultipartBody.Builder()
